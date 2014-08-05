@@ -1,0 +1,5 @@
+This is a final project in a online course in Coursera
+It can solve fifty puzzle game automatically
+
+You can excute by the link or install simplegui package on PC
+http://www.codeskulptor.org/#user37_mxGsrv9qGoefxtO.py
