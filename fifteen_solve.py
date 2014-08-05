@@ -122,10 +122,9 @@ class Puzzle:
                 zero_row += 1
             else:
                 assert False, "invalid direction: " + direction
-
-    ##################################################################
-    # Phase one methods
-
+    ########################################################
+    # Move & Solve puzzle methods
+    
     def lower_row_invariant(self, target_row, target_col):
         """
         Check whether the puzzle satisfies the specified invariant
@@ -246,14 +245,12 @@ class Puzzle:
         Add move string when move_row > 0, move_col = 0
         """
         
-        #print "move_string bef:",move_string
         move_string += 'u' * move_row
         while move_row > 1:
             move_string += "lddru"
             move_row -= 1        
         move_string += "ld"
               
-        #print "move_string aft:",move_string
         return move_string
     
     def current_l_target(self, move_string, move_col):
@@ -261,13 +258,11 @@ class Puzzle:
         Add move string when move_row == 0, move_col < 0
         """
         
-        #print "move_string bef:",move_string
         move_string += 'l' * (-move_col)
         while move_col < -1:
             move_string += "urrdl"
             move_col += 1        
               
-        #print "move_string aft:",move_string
         return move_string    
 
     def current_ul_target(self, move_string, move_row, move_col):
@@ -275,7 +270,6 @@ class Puzzle:
         Add move string when move_row > 0 , move_col < 0
         """
         
-        #print "move_string bef:",move_string
         move_string += 'u' * move_row
         move_string += 'l' * (-move_col)
         while move_col < -1:
@@ -287,7 +281,6 @@ class Puzzle:
             move_row -= 1        
         move_string += "ld"
         
-        #print "move_string aft:",move_string
         return move_string   
     
     def current_ur_target(self, move_string, move_row, move_col):
@@ -295,7 +288,6 @@ class Puzzle:
         Add move string when move_row > 0 , move_col > 0
         """
         
-        #print "move_string bef:",move_string
         move_string += 'u' * move_row
         move_string += 'r' * move_col
         while move_col > 1:
@@ -316,11 +308,7 @@ class Puzzle:
             move_row -= 1        
         move_string += "ld"
         
-        #print "move_string aft:",move_string
         return move_string      
-    
-    #############################################################
-    # Phase two methods
 
     def row0_invariant(self, target_col):
         """
@@ -329,8 +317,6 @@ class Puzzle:
         Returns a boolean
         """
         target_row = 0
-        #target_value = target_col + self._width * target_row
-        #print "target value =", target_value
         
         # Check (row > 1) are in position or not #
         for row in range(self._height):
@@ -465,9 +451,6 @@ class Puzzle:
         self.update_puzzle(move_string)
         return move_string
 
-    ###########################################################
-    # Phase 3 methods
-
     def solve_2x2(self):
         """
         Solve the upper left 2x2 part of the puzzle
@@ -490,8 +473,7 @@ class Puzzle:
         for num in range((self._height*self._width-1), (self._width*2-1), -1):
             row = num/self._width
             col = num%self._width
-            #print num, row, col
-            #print self.__str__() 
+
             if self.current_position(row, col) == (row, col):
                 continue
             elif self.current_position(0, 0) != (row, col):
@@ -508,8 +490,6 @@ class Puzzle:
                 print "temp_zero_move=", temp_zero_move
                 self.update_puzzle(temp_zero_move)
                 solution_string += temp_zero_move
-                
-                #print self.__str__() 
            
             if row >= 2 and col == 0: 
                 solution_string += self.solve_col0_tile(row)
@@ -551,33 +531,3 @@ class Puzzle:
 
 # Start interactive simulation
 poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
-
-#test_grid = [[1,6,9,8],[4,5,2,7],[3,0,10,11],[12,13,14,15]]
-#test_grid = [[1,6,9,8],[4,5,2,13],[3,10,7,11],[12,0,14,15]]
-#test_grid = [[1,10,9,8],[4,6,5,7],[14,12,2,11],[3,13,0,15]]
-#test_grid = [[1,6,9,8],[4,5,2,3],[12,10,7,11],[0,13,14,15]]
-#test_grid = [[3,1,6,0],[4,5,2,7],[8,9,10,11],[12,13,14,15]]
-#test_grid = [[1,5,2,3],[4,15,6,7],[8,9,10,11],[12,13,14,0]]
-#puzzle_test = Puzzle(4, 4,test_grid)
-#puzzle_test = Puzzle(3, 3, [[0, 1, 2], [3, 4, 5], [6, 7, 8]])
-#puzzle_test = Puzzle(3, 3, [[8, 7, 6], [5, 4, 3], [2, 1, 0]])
-#puzzle_test = Puzzle(4, 5, [[15, 16, 0, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [1, 2, 17, 18, 19]])
-#puzzle_test = Puzzle(3, 6, [[16, 7, 13, 17, 5, 9], [3, 0, 14, 10, 12, 6], [4, 15, 2, 11, 8, 1]])
-#puzzle_test = Puzzle(2, 4, [[0, 3, 2, 7], [4, 5, 6, 1]])
-#print puzzle_test
-
-#print "current_position =", puzzle_test.current_position(2,1)
-#print "lower_row_invariant =", puzzle_test.lower_row_invariant(2, 1)
-#print "lower_row_invariant =", puzzle_test.lower_row_invariant(3, 1)
-#print puzzle_test.solve_interior_tile(2, 1)
-#print puzzle_test.solve_col0_tile(3)
-#print "row0 method=", puzzle_test.row0_invariant(2)
-#print "row1 method=", puzzle_test.row1_invariant(2)
-#print puzzle_test.solve_row0_tile(3)
-#print puzzle_test.solve_2x2()
-#print puzzle_test.solve_puzzle()
-#print puzzle_test
-
-#obj = Puzzle(3, 3, [[8, 7, 6], [5, 4, 3], [2, 1, 0]])
-#print obj
-#obj.solve_interior_tile(2, 2)
